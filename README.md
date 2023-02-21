@@ -20,7 +20,7 @@ This project uses a number of open source projects to work properly:
 
 This project requires [Node.js](https://nodejs.org/) to run.
 
-Install the dependencies and devDependencies and start the server.
+Install the dependencies and devDependencies.
 
 ```sh
 cd image-processing-api
@@ -39,6 +39,11 @@ npm run start
 
 ```sh
 npm run build
+```
+
+- Run tests
+```sh
+npm run tests
 ```
 
 ### API Endpoint to use

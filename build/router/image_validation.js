@@ -3,18 +3,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const path_1 = __importDefault(require("path"));
 const sharp_1 = __importDefault(require("sharp"));
 const fs_1 = __importDefault(require("fs"));
+const helper_1 = __importDefault(require("../utils/helper"));
 const validateImage = (req, res, next) => {
-    const fileName = req.query.name;
-    const imagePath = path_1.default.resolve(__dirname, '..', '..', 'images', fileName);
+    const imageData = new helper_1.default(req.query.name);
     // Check if the file exists
-    if (!fs_1.default.existsSync(imagePath)) {
+    if (!fs_1.default.existsSync(imageData.imagePath)) {
         return res.status(404).send('Image not found');
     }
     // Check if the file is a valid image
-    (0, sharp_1.default)(imagePath)
+    (0, sharp_1.default)(imageData.imagePath)
         .metadata()
         .then((metadata) => {
         if (!metadata.format) {
