@@ -1,23 +1,22 @@
 import express from 'express';
-import path from 'path';
 import sharp from 'sharp';
 import fs from 'fs';
+import ImageData from '../utils/helper';
 
 const validateImage = (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
 ) => {
-    const fileName = req.query.name as string;
-    const imagePath = path.resolve(__dirname, '..', '..', 'images', fileName);
+    const imageData = new ImageData(req.query.name as string);
 
     // Check if the file exists
-    if (!fs.existsSync(imagePath)) {
+    if (!fs.existsSync(imageData.imagePath)) {
         return res.status(404).send('Image not found');
     }
 
     // Check if the file is a valid image
-    sharp(imagePath)
+    sharp(imageData.imagePath)
         .metadata()
         .then((metadata) => {
             if (!metadata.format) {
