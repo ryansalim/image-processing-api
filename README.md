@@ -40,11 +40,6 @@ npm run start
 npm run build
 ```
 
-- Run tests
-```sh
-npm run test
-```
-
 ### Example
 - Resize image
 
@@ -53,3 +48,10 @@ npm run test
 - Delete image
 
     DELETE http://localhost:3000/image/process?name={image_name.jpeg}&width=300&height=300
+
+### Available Image Names
+- encenadaport.jpg
+- fjord.jpg
+- icelandwaterfall.jpg
+- palmtunnel.jpg
+- santamonica.jpg
