@@ -25,7 +25,6 @@ Install the dependencies and devDependencies.
 ```sh
 cd image-processing-api
 npm i
-node index
 ```
 
 ## Commands
@@ -43,10 +42,10 @@ npm run build
 
 - Run tests
 ```sh
-npm run tests
+npm run test
 ```
 
-### API Endpoint to use
+### Example
 - Resize image
 
     GET http://localhost:3000/image/process?name={image_name.jpeg}&width=300&height=300
