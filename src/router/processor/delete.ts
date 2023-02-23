@@ -27,7 +27,7 @@ router.delete('/process', validator, async (req, res) => {
             }
         });
     } else {
-        res.send('No Image found!');
+        res.status(404).send('No Image found!');
     }
 });
 

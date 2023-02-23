@@ -35,7 +35,7 @@ router.delete('/process', image_validation_1.default, (req, res) => __awaiter(vo
         });
     }
     else {
-        res.send('No Image found!');
+        res.status(404).send('No Image found!');
     }
 }));
 exports.default = router;
