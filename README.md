@@ -40,6 +40,11 @@ npm run start
 npm run build
 ```
 
+- Running tests
+```sh
+npm run test
+```
+
 ### Example
 - Resize image
 
