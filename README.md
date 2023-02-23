@@ -9,12 +9,12 @@
 
 This project uses a number of open source projects to work properly:
 
-- [Node.js]() - HTML enhanced for web apps!
-- [Express]() - fast node.js network app framework [@tjholowaychuk]
-- [Jasmine]() - Markdown parser done right. Fast and easy to extend.
-- [Prettier]() - great UI boilerplate for modern web apps
-- [Sharp]() - evented I/O for the backend
-- [Nodemon]() - 
+- [Node.js](https://nodejs.org/en/) - JavaScript runtime built on Chrome's V8 JavaScript engine.
+- [Express](https://www.npmjs.com/package/express) - Fast, unopinionated, minimalist web framework for Node.js.
+- [Jasmine](https://www.npmjs.com/package/jasmine) - command line interface and supporting code for running Jasmine specs under Node.
+- [Prettier](https://www.npmjs.com/package/prettier) - Opinionated Code Formatter
+- [Sharp](https://www.npmjs.com/package/sharp) - high speed Node.js module is to convert large images in common formats
+- [Nodemon](https://www.npmjs.com/package/nodemon) - Simple monitor script for use during development of a Node.js app.
 
 ## Installation
 
