@@ -4,7 +4,7 @@
   "description": "udacity module 1 project",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint 'src/**/*.ts'",
+    "lint": "eslint 'src'",
     "prettier": "npx prettier --write src",
     "start": "nodemon build/index.js",
     "build": "npx tsc",
