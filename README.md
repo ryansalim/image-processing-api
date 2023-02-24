@@ -28,16 +28,14 @@ npm i
 ```
 
 ## Commands
-- Starting the server
-
-```sh
-npm run start
-```
-
 - Building project
-
 ```sh
 npm run build
+```
+
+- Starting the server
+```sh
+npm run start
 ```
 
 - Running tests
