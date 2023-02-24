@@ -34,8 +34,10 @@ describe('DELETE /process', () => {
             .delete('/image/process?name=test-image.jpg&width=100&height=100')
             .expect(500, 'Error deleting image')
             .end((err) => {
-            if (err)
-                return done();
+            if (err) {
+                done();
+                return;
+            }
             done();
         });
     });
@@ -48,8 +50,10 @@ describe('DELETE /process', () => {
             .delete('/image/process?name=test-image.jpg&width=100&height=100')
             .expect(200, 'Success deleting image!')
             .end((err) => {
-            if (err)
-                return done();
+            if (err) {
+                done();
+                return;
+            }
             // Check if the image has been deleted
             expect(fs_1.default.existsSync(imagePath)).toBeFalsy();
             done();

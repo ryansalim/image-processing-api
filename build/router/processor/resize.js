@@ -27,7 +27,7 @@ router.get('/process', image_validation_1.default, (req, res) => __awaiter(void 
     // Return existing image if there is one already, else create new image
     if (fs_1.default.existsSync(processedImagePath)) {
         fs_1.default.readFile(processedImagePath, (err, data) => {
-            if (err) {
+            if (err != null) {
                 console.log(err);
                 res.status(500).send('Error loading resized image');
             }
@@ -44,7 +44,7 @@ router.get('/process', image_validation_1.default, (req, res) => __awaiter(void 
             .resize(width, height)
             .toBuffer();
         fs_1.default.writeFile(processedImagePath, processedImageBuffer, (err) => {
-            if (err) {
+            if (err != null) {
                 console.log(err);
                 res.status(500).send('Error saving resized image');
             }

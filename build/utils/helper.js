@@ -17,7 +17,7 @@ class ImageData {
         this.processedImagePath = (...params) => {
             const imageName = params.join('x');
             __classPrivateFieldGet(this, _ImageData_createOutputDirIfNeeded, "f").call(this);
-            let result = path_1.default.resolve(this.processedImageFolderPath, `${this.name}_${imageName}${this.ext}`);
+            const result = path_1.default.resolve(this.processedImageFolderPath, `${this.name}_${imageName}${this.ext}`);
             this.processedFileName = path_1.default.parse(result).name;
             return result;
         };

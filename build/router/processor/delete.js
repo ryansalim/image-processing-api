@@ -24,7 +24,7 @@ router.delete('/process', image_validation_1.default, (req, res) => __awaiter(vo
     const processedImagePath = imageData.processedImagePath(`${width}`, `${height}`);
     if (fs_1.default.existsSync(processedImagePath)) {
         fs_1.default.unlink(processedImagePath, (err) => {
-            if (err) {
+            if (err != null) {
                 console.log(err);
                 res.status(500).send('Error deleting image');
             }

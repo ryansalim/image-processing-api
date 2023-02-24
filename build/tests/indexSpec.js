@@ -12,8 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = __importDefault(require("../index"));
 const supertest_1 = __importDefault(require("supertest"));
+const index_1 = __importDefault(require("../index"));
 describe('main app', () => {
     const request = (0, supertest_1.default)(index_1.default);
     it('should return 200 and a welcome message for the root endpoint', () => __awaiter(void 0, void 0, void 0, function* () {
