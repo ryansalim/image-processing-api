@@ -45,6 +45,16 @@ npm run build
 npm run test
 ```
 
+- Linting (Eslint)
+```sh
+npm run lint
+```
+
+- Formatting (Prettier)
+```sh
+npm run prettier
+```
+
 ### Example
 - Resize image
 
