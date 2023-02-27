@@ -18,24 +18,26 @@ const image_validation_1 = __importDefault(require("../image_validation"));
 const helper_1 = __importDefault(require("../../utils/helper"));
 const router = express_1.default.Router();
 router.delete('/process', image_validation_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const width = parseInt(req.query.width, 10);
-    const height = parseInt(req.query.height, 10);
-    const imageData = new helper_1.default(req.query.name);
-    const processedImagePath = imageData.processedImagePath(`${width}`, `${height}`);
-    if (fs_1.default.existsSync(processedImagePath)) {
-        fs_1.default.unlink(processedImagePath, (err) => {
-            if (err != null) {
-                console.log(err);
-                res.status(500).send('Error deleting image');
-            }
-            else {
-                console.log(`${imageData.processedFileName} is deleted!`);
-                res.send('Success deleting image!');
-            }
+    const query = req.query;
+    if (query.removeAll != undefined) {
+        return fs_1.default.rm(helper_1.default.imageFolderPath(), { recursive: true }, (err) => {
+            if (err != null)
+                return res.status(404).send('Folder not found');
+            res.send('All images deleted!');
         });
     }
-    else {
-        res.status(404).send('No Image found!');
-    }
+    if (query.width == undefined || query.height == undefined)
+        return res.status(400).send('Specify the width and height!');
+    const width = parseInt(query.width, 10);
+    const height = parseInt(query.height, 10);
+    const fileName = query.name;
+    const imageData = new helper_1.default(fileName, `${width}`, `${height}`);
+    const processedImagePath = imageData.processedImagePath;
+    fs_1.default.unlink(processedImagePath, (err) => {
+        if (err != null)
+            return res.status(404).send('No Image found!');
+        console.log(`${imageData.processedFileName} is deleted!`);
+        res.send('Success deleting image!');
+    });
 }));
 exports.default = router;

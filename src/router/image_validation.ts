@@ -11,9 +11,9 @@ const validateImage = (
   const imageData = new ImageData(req.query.name as string)
 
   // Check if the file exists
-  if (!fs.existsSync(imageData.imagePath)) {
-    return res.status(404).send('Image not found')
-  }
+  fs.access(imageData.imagePath, fs.constants.F_OK, (err) => {
+    if (err) return res.status(404).send('Image not found')
+  })
 
   // Check if the file is a valid image
   sharp(imageData.imagePath)

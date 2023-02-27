@@ -1,19 +1,26 @@
 import request from 'supertest'
 import fs from 'fs'
 import app from '../index'
+import sharp from 'sharp'
+import express from 'express'
 
 describe('GET Image resizer', () => {
-  it('Should throw error when failed reading image', (done) => {
-    spyOn(fs, 'existsSync').and.returnValue(true)
+  it('Should create new image when failed reading image', (done) => {
+    const testData = Buffer.from('test image')
     spyOn(fs.promises, 'readFile').and.returnValue(
-      Promise.reject(Error('Error loading resized image')).catch((err) => {
+      Promise.reject(Error()).catch((err) => {
         return err
       })
     )
+    spyOn(sharp.prototype, 'toBuffer').and.returnValue(
+      Promise.resolve(testData)
+    )
+    spyOn(fs.promises, 'writeFile').and.returnValue(Promise.resolve())
+    spyOn(express.response, 'set').and.callFake(jasmine.createSpy())
 
     request(app)
       .get('/image/process?name=test-image.jpg&width=100&height=100')
-      .expect(500, 'Error loading resized image')
+      .expect(200, testData)
       .end((err) => {
         if (err) {
           done()
@@ -25,8 +32,8 @@ describe('GET Image resizer', () => {
 
   it('Should send data when success reading image', (done) => {
     const testData = Buffer.from('test image data')
-    spyOn(fs, 'existsSync').and.returnValue(true)
     spyOn(fs.promises, 'readFile').and.returnValue(Promise.resolve(testData))
+    spyOn(express.response, 'set').and.callFake(jasmine.createSpy())
 
     request(app)
       .get('/image/process?name=test-image.jpg&width=100&height=100')

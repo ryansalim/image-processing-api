@@ -19,31 +19,39 @@ const fs_1 = __importDefault(require("fs"));
 const helper_1 = __importDefault(require("../../utils/helper"));
 const router = express_1.default.Router();
 router.get('/process', image_validation_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const width = parseInt(req.query.width, 10);
-    const height = parseInt(req.query.height, 10);
-    const imageData = new helper_1.default(req.query.name);
-    const imagePath = imageData.imagePath;
-    const processedImagePath = imageData.processedImagePath(`${width}`, `${height}`);
-    // Return existing image if there is one already, else create new image
-    if (fs_1.default.existsSync(processedImagePath)) {
-        fs_1.default.readFile(processedImagePath, (err, data) => {
-            if (err != null) {
-                console.log(err);
-                res.status(500).send('Error loading resized image');
-            }
-            else {
-                console.log(`${imageData.processedFileName} already exist`);
-                res.set('Content-Type', 'image/jpeg');
-                res.send(data);
-            }
-        });
+    const query = req.query;
+    if (query.width == undefined || query.height == undefined) {
+        return res.status(400).send('Specify the width and height to resize!');
     }
-    else {
-        console.log('Creating new image...');
-        const processedImageBuffer = yield (0, sharp_1.default)(imagePath)
-            .resize(width, height)
-            .toBuffer();
-        fs_1.default.writeFile(processedImagePath, processedImageBuffer, (err) => {
+    const width = parseInt(query.width, 10);
+    const height = parseInt(query.height, 10);
+    const fileName = req.query.name;
+    const imageData = new helper_1.default(fileName, `${width}`, `${height}`);
+    const imagePath = imageData.imagePath;
+    const processedImagePath = imageData.processedImagePath;
+    // Return existing image if there is one already, else create new image
+    fs_1.default.readFile(processedImagePath, (err, data) => __awaiter(void 0, void 0, void 0, function* () {
+        if (err != null) {
+            console.log('Creating new image...');
+            yield (0, sharp_1.default)(imagePath)
+                .resize(width, height)
+                .toBuffer()
+                .then((buffer) => {
+                saveImage(processedImagePath, buffer);
+            })
+                .catch((err) => {
+                console.error(err);
+                return res.status(500).send('Failed saving image');
+            });
+        }
+        else {
+            console.log(`${imageData.processedFileName} already exist`);
+            res.set('Content-Type', 'image/jpeg');
+            res.send(data);
+        }
+    }));
+    const saveImage = (path, buffer) => {
+        fs_1.default.writeFile(path, buffer, (err) => {
             if (err != null) {
                 console.log(err);
                 res.status(500).send('Error saving resized image');
@@ -51,9 +59,9 @@ router.get('/process', image_validation_1.default, (req, res) => __awaiter(void 
             else {
                 console.log('New image created');
                 res.set('Content-Type', 'image/jpeg');
-                res.send(processedImageBuffer);
+                res.send(buffer);
             }
         });
-    }
+    };
 }));
 exports.default = router;

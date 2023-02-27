@@ -6,21 +6,25 @@ class ImageData {
   ext: string
   imagePath: string
   processedImageFolderPath: string
-  processedFileName = ''
+  processedFileName?: string
+  processedImagePath?: string
 
-  constructor(name: string) {
+  constructor(name: string, ...params: string[]) {
     this.imagePath = path.resolve(__dirname, '..', '..', 'images', name)
-    this.processedImageFolderPath = path.resolve(
-      __dirname,
-      '..',
-      '..',
-      'processed_images'
-    )
+    this.processedImageFolderPath = ImageData.imageFolderPath()
     this.name = path.parse(this.imagePath).name
     this.ext = path.parse(this.imagePath).ext
+
+    if (params.length > 0) {
+      this.processedImagePath = this.#processedImagePath(...params)
+    }
   }
 
-  processedImagePath = (...params: string[]): string => {
+  static imageFolderPath = (): string => {
+    return path.resolve(__dirname, '..', '..', 'processed_images')
+  }
+
+  #processedImagePath = (...params: string[]): string => {
     const imageName = params.join('x')
     this.#createOutputDirIfNeeded()
     const result = path.resolve(

@@ -7,20 +7,19 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _ImageData_createOutputDirIfNeeded;
+var _ImageData_processedImagePath, _ImageData_createOutputDirIfNeeded;
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 class ImageData {
-    constructor(name) {
-        this.processedFileName = '';
-        this.processedImagePath = (...params) => {
+    constructor(name, ...params) {
+        _ImageData_processedImagePath.set(this, (...params) => {
             const imageName = params.join('x');
             __classPrivateFieldGet(this, _ImageData_createOutputDirIfNeeded, "f").call(this);
             const result = path_1.default.resolve(this.processedImageFolderPath, `${this.name}_${imageName}${this.ext}`);
             this.processedFileName = path_1.default.parse(result).name;
             return result;
-        };
+        });
         _ImageData_createOutputDirIfNeeded.set(this, () => {
             if (!fs_1.default.existsSync(this.processedImageFolderPath)) {
                 console.log('Creating new folder');
@@ -28,10 +27,16 @@ class ImageData {
             }
         });
         this.imagePath = path_1.default.resolve(__dirname, '..', '..', 'images', name);
-        this.processedImageFolderPath = path_1.default.resolve(__dirname, '..', '..', 'processed_images');
+        this.processedImageFolderPath = ImageData.imageFolderPath();
         this.name = path_1.default.parse(this.imagePath).name;
         this.ext = path_1.default.parse(this.imagePath).ext;
+        if (params.length > 0) {
+            this.processedImagePath = __classPrivateFieldGet(this, _ImageData_processedImagePath, "f").call(this, ...params);
+        }
     }
 }
-_ImageData_createOutputDirIfNeeded = new WeakMap();
+_ImageData_processedImagePath = new WeakMap(), _ImageData_createOutputDirIfNeeded = new WeakMap();
+ImageData.imageFolderPath = () => {
+    return path_1.default.resolve(__dirname, '..', '..', 'processed_images');
+};
 exports.default = ImageData;

@@ -6,15 +6,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const fs_1 = __importDefault(require("fs"));
 const index_1 = __importDefault(require("../index"));
+const sharp_1 = __importDefault(require("sharp"));
+const express_1 = __importDefault(require("express"));
 describe('GET Image resizer', () => {
-    it('Should throw error when failed reading image', (done) => {
-        spyOn(fs_1.default, 'existsSync').and.returnValue(true);
-        spyOn(fs_1.default.promises, 'readFile').and.returnValue(Promise.reject(Error('Error loading resized image')).catch((err) => {
+    it('Should create new image when failed reading image', (done) => {
+        const testData = Buffer.from('test image');
+        spyOn(fs_1.default.promises, 'readFile').and.returnValue(Promise.reject(Error()).catch((err) => {
             return err;
         }));
+        spyOn(sharp_1.default.prototype, 'toBuffer').and.returnValue(Promise.resolve(testData));
+        spyOn(fs_1.default.promises, 'writeFile').and.returnValue(Promise.resolve());
+        spyOn(express_1.default.response, 'set').and.callFake(jasmine.createSpy());
         (0, supertest_1.default)(index_1.default)
             .get('/image/process?name=test-image.jpg&width=100&height=100')
-            .expect(500, 'Error loading resized image')
+            .expect(200, testData)
             .end((err) => {
             if (err) {
                 done();
@@ -25,8 +30,8 @@ describe('GET Image resizer', () => {
     });
     it('Should send data when success reading image', (done) => {
         const testData = Buffer.from('test image data');
-        spyOn(fs_1.default, 'existsSync').and.returnValue(true);
         spyOn(fs_1.default.promises, 'readFile').and.returnValue(Promise.resolve(testData));
+        spyOn(express_1.default.response, 'set').and.callFake(jasmine.createSpy());
         (0, supertest_1.default)(index_1.default)
             .get('/image/process?name=test-image.jpg&width=100&height=100')
             .expect(200, testData)

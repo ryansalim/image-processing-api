@@ -9,9 +9,10 @@ const helper_1 = __importDefault(require("../utils/helper"));
 const validateImage = (req, res, next) => {
     const imageData = new helper_1.default(req.query.name);
     // Check if the file exists
-    if (!fs_1.default.existsSync(imageData.imagePath)) {
-        return res.status(404).send('Image not found');
-    }
+    fs_1.default.access(imageData.imagePath, fs_1.default.constants.F_OK, (err) => {
+        if (err)
+            return res.status(404).send('Image not found');
+    });
     // Check if the file is a valid image
     (0, sharp_1.default)(imageData.imagePath)
         .metadata()
